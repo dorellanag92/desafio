@@ -16,27 +16,39 @@ import com.example.desafio.exception.ResourceNotFoundException;
 import com.example.desafio.model.Postulacion;
 import com.example.desafio.repository.PostulacionRepository;
 
-@Service
+// se definen los servicios para manejar la logica de negocio, se realiza lo mismo para Facultad y Departamento
+
+@Service //Se indica que la siguiente clase sera un servicio
 public class PostulacionService implements PostulacionRepository {
 
-    @Autowired
+    @Autowired //Para inyectar automaticamente una instancia del repositorio de postulacion
     public PostulacionRepository postulacionRepository;
 
+    //Los siguientes metodos fueron generados automaticamente por el editor
+    //Se modificaron solo los que se van a utilizar
+
+    //Metodo para listar todas las postulaciones
     @SuppressWarnings("null")
     @Override
     public List<Postulacion> findAll() {
         return postulacionRepository.findAll();
     }
+
+    //Metodo para listar una postulacion por su codigo
     @SuppressWarnings("null")
     @Override
     public Optional<Postulacion> findById(Long id) {
         return postulacionRepository.findById(id);
     }
+
+    //Metodo para crear o editar una postulacion
     @SuppressWarnings("null")
     @Override
     public <S extends Postulacion> S save(S entity) {
         return postulacionRepository.save(entity);
     }
+
+    // Metodo para eliminar una postulacion por su codigo
     @SuppressWarnings("null")
     @Override
     public void deleteById(Long id) {
@@ -46,6 +58,7 @@ public class PostulacionService implements PostulacionRepository {
         postulacionRepository.deleteById(id);
     }
 
+    //Metodos sin utilizar pero que el editor no me permite borrar
     @Override
     public void deleteAllByIdInBatch(Iterable<Long> ids) {
         // TODO Auto-generated method stub

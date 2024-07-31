@@ -22,12 +22,13 @@ public class DepartamentoService implements DepartamentoRepository{
     @Autowired
     private DepartamentoRepository departamentoRepository;
 
+    //metodo para obtener todos los departamentos
     @SuppressWarnings("null")
     @Override
     public List<Departamento> findAll() {
         return departamentoRepository.findAll();
     }
-
+    //Metodo para obtener los depoartamentos segun la id de facultad
     public List<Departamento> findAllByFacultad(Long id){
         List<Departamento> departamentoRespuesta = new ArrayList<>();
         List<Departamento> departamentos = departamentoRepository.findAll();
