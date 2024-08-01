@@ -1,9 +1,9 @@
 package com.example.desafio.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 // Se crea el controlador REST para las postulaciones, posteriormente se realiza para Facultad y Departamento
 @RestController //se especifica la clase como un controlador REST
-@RequestMapping ("/postulaciones") //Se especifica la URL
+@RequestMapping ("/api/postulaciones") //Se especifica la URL
 public class PostulacionController{
 
     @Autowired
@@ -33,45 +33,30 @@ public class PostulacionController{
     }
 
     //Igual que el anterior pero con un codigo de postulacion especifico
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Postulacion>> getPostulacionById(@PathVariable Long id){
-        return ResponseEntity.ok(postulacionService.findById(id));
+    @GetMapping("/{codigo}")
+    public ResponseEntity<Postulacion> getPostulacionById(@PathVariable Long codigo){
+        Postulacion postulacion = postulacionService.getPostulacionById(codigo);
+        return ResponseEntity.ok(postulacion);
     }
 
     //Manejo de solicitudes HTTP POST para crear una postulacion
     @PostMapping
-    private Postulacion savePostulacion(@RequestBody Postulacion postulacion){
-        return postulacionService.save(postulacion);
+    public ResponseEntity<Postulacion> createPostulacion(@RequestBody Postulacion postulacion) {
+        Postulacion createdPostulacion = postulacionService.createPostulacion(postulacion);
+        return new ResponseEntity<>(createdPostulacion, HttpStatus.CREATED);
     }
 
     //Manejo de solicitudes HTTP PUT para actualizar una postulacion existente mediante su codigo, 
-    @PutMapping("/{id}")
-    public ResponseEntity<Postulacion> updatePostulacion(@PathVariable Long id, @RequestBody Postulacion postulacion){
-        Optional<Postulacion> existingPostulacion = postulacionService.findById(id);
-        //Se hace uso de un if-else para verificar la existencia de la postulacion
-        if (existingPostulacion.isPresent()) {
-            Postulacion updatedPostulacion = existingPostulacion.get();
-            updatedPostulacion.setRut(postulacion.getRut());
-            updatedPostulacion.setTituloPostulacion(postulacion.getTituloPostulacion());
-            updatedPostulacion.setDepartamento(postulacion.getDepartamento());
-            updatedPostulacion.setCorreo(postulacion.getCorreo());
-            updatedPostulacion.setFecha(postulacion.getFecha());
-            postulacionService.save(updatedPostulacion);
-            return ResponseEntity.ok(updatedPostulacion);
-        }
-        else{
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{codigo}")
+    public ResponseEntity<Postulacion> updatePostulacion(@PathVariable Long codigo, @RequestBody Postulacion postulacionDetails) {
+        Postulacion updatedPostulacion = postulacionService.updatePostulacion(codigo, postulacionDetails);
+        return ResponseEntity.ok(updatedPostulacion);
     }
 
     //Manejo de solicitudes HTTP DELETE para eliminar una postulacion existente mediante su codigo
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePostulacion(@PathVariable Long id){
-        if (postulacionService.findById(id).isPresent()) {
-            postulacionService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<Void> deletePostulacion(@PathVariable Long codigo) {
+        postulacionService.deletePostulacion(codigo);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -2,8 +2,6 @@ package com.example.desafio.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,9 +9,8 @@ import jakarta.persistence.Table;
 @Table (name = "facultad")
 public class Facultad {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column (name = "facultad_id")
-    private Long facultadId;
+    @Column (name = "id")
+    private Long id;
     @Column (name = "facultad_nombre")
     private String facultadNombre;
 
@@ -21,27 +18,28 @@ public class Facultad {
         
     }
 
-    public Facultad(Long facultadId, String facultadNombre) {
+    public Facultad(Long id, String facultadNombre) {
         super();
-        this.facultadId = facultadId;
+        this.id = id;
         this.facultadNombre = facultadNombre;
     }
 
-    public Long getFacultadId() {
-        return facultadId;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFacultadNombre() {
         return facultadNombre;
     }
 
-    public void setFacultadId(Long facultadId) {
-        this.facultadId = facultadId;
-    }
-
     public void setFacultadNombre(String facultadNombre) {
         this.facultadNombre = facultadNombre;
     }
+
 
     
 }
